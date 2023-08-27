@@ -1,32 +1,45 @@
-import { PokemonAction, FETCH_POKEMON_LIST,FETCH_POKEMON_VIEW } from '../actions/pokemonActions';
-
-interface PokemonState {
-  names: string[];
-}
+import { PokemonState, Action, ActionType } from "../types";
 
 const initialState: PokemonState = {
-  names: [],
+	list: [],
+	view: null,
+	currentPage: 1,
 };
+/**
+ *
+ * @param state
+ * @param action
+ * @returns
+ */
+const pokemonReducer = (state = initialState, action: Action) => {
+	switch (action.type) {
+		case ActionType.SEARCH:
+			return {
+				...state,
+				list: action.payload,
+			};
 
-const pokemonReducer = (
-  state = initialState,
-  action: PokemonAction
-): any => {
-  switch (action.type) {
-    case FETCH_POKEMON_LIST:
-      return {
-        ...state,
-        names: action.payload,
-      };
-      case FETCH_POKEMON_VIEW:
-        return {
-          ...state,
-          data: action.payload,
-          
-        };
-    default:
-      return state;
-  }
+		case ActionType.ADD_PAGE:
+			return {
+				...state,
+				currentPage: state.currentPage + 1,
+			};
+
+		case ActionType.FETCH_POKEMON_LIST:
+			return {
+				...state,
+				list: action.payload,
+			};
+
+		case ActionType.FETCH_POKEMON_VIEW:
+			return {
+				...state,
+				view: action.payload,
+			};
+
+		default:
+			return state;
+	}
 };
 
 export default pokemonReducer;

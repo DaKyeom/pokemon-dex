@@ -1,13 +1,11 @@
-import React from 'react';
+import React from "react";
 
 const Loading: React.FC = () => {
-
-  
-  return (
-    <div>
-    <p>Loading...</p>
-    </div>
-  );
+	return (
+		<div>
+			<p>Loading...</p>
+		</div>
+	);
 };
 
 export default Loading;

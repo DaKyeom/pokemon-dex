@@ -1,34 +1,65 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {  useParams } from 'react-router-dom';
-import { fetchPokemonView } from '../actions/pokemonActions';
-import { RootState } from '../reducers';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
+import { fetchPokemonView } from "../actions/pokemonActions";
+import { RootState } from "../reducers";
+import { Loading } from "../components";
 
 const PokemonView: React.FC = () => {
-  const { name } = useParams();
-  const dispatch :any = useDispatch();
+	const { name } = useParams();
+	const dispatch: any = useDispatch();
 
-  const data = useSelector((state: RootState) => state?.pokemon?.data);
- 
+	const data = useSelector((state: RootState) => state?.pokemon?.view);
+	const {
+		id,
+		height,
+		weight,
+		koName,
+		abilities,
+		evolution,
+		name: enNAme,
+	} = data || {};
 
-  useEffect(() => {
-    dispatch(fetchPokemonView(name));
-  }, [dispatch]);
+	useEffect(() => {
+		dispatch(fetchPokemonView(name));
+	}, [dispatch]);
 
-  return (
-    <div>
-     <h1>포켓몬 상세 정보</h1>
-     <p>{`번호: ${data?.id}`}</p>
-     <p>{`이름: ${data?.koName}`}</p>
-     <p>{`무게: ${data?.weight}`}</p>
-     <p>{`키: ${data?.height}`}</p>
-     <div >
-     <p>능력: 
-     {data?.abilities?.map((value:any,index:number)=><span key={index}>{value?.ability?.name} {index < data.abilities.length - 1 ? ', ' : ''}</span>)}
-     </p>
-     </div>
-    </div>
-  );
+	return !data || enNAme !== name ? (
+		<Loading />
+	) : (
+		<div>
+			<h1>포켓몬 상세 정보</h1>
+			{data && (
+				<div>
+					<p>{`번호: ${id}`}</p>
+					<p>{`이름: ${koName}`}</p>
+					<p>{`무게: ${weight}`}</p>
+					<p>{`키: ${height}`}</p>
+					<div>
+						<p>
+							능력:
+							{abilities?.map((value: any, index: number) => (
+								<span key={index}>
+									{value?.ability?.name}
+									{index < abilities?.length - 1 ? ", " : ""}
+								</span>
+							))}
+						</p>
+					</div>
+					<p>
+						진화 단계:
+						{evolution?.map((name: string, index: number) => (
+							<span key={index}>
+								{name ? name : "없음"}{" "}
+								{index < evolution?.length - 1 ? " - " : ""}
+							</span>
+						))}
+					</p>
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default PokemonView;

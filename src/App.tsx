@@ -1,23 +1,16 @@
-import React from 'react';
-import './App.css';
-import { Routes, Route,  BrowserRouter as Router, } from "react-router-dom";
-import PokemonList from './components/PokemonList';
-import PokemonView from './components/PokemonView';
+import React from "react";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+
+import { ListScreen, ViewScreen } from "./modules";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-      <Router>
+    <Router>
       <Routes>
-      <Route path="/" element={<PokemonList />} />
-      <Route path="/view/:id" element={<PokemonView />} />
-     
-        </Routes> 
+        <Route path="/" element={<ListScreen />} />
+        <Route path="/view/:name" element={<ViewScreen />} />
+      </Routes>
     </Router>
-
-      </header>
-    </div>
   );
 }
 
